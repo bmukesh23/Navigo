@@ -5,8 +5,6 @@ A blockchain-enabled cab booking web app that revolutionizes transportation thro
 
 - `NextJS`
 - `TypeScript`
-- `Tailwind CSS`
-- `Ethers.js`
 - `Metamask`
 - `Mapbox`
 
