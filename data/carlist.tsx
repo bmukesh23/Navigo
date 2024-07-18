@@ -10,31 +10,36 @@ export default [
         id: 1,
         name: "Mini",
         image: navigoMini,
-        charges: 300
+        charges: 300,
+        min: "5 min",
     },
     {
         id: 2,
         name: "Swift XL",
         image: navigoXL,
-        charges: 300
+        charges: 300,
+        min: "10 min",
     },
     {
         id: 3,
         name: "Premier",
         image: navigoPremier,
-        charges: 500
+        charges: 500,
+        min: "12 min",
     },
     {
         id: 4,
         name: "Prime SUV",
         image: navigoBlackSUV,
-        charges: 700
+        charges: 700,
+        min: "16 min",
     },
     {
         id: 5,
         name: "Prime Sedan",
         image: navigoSedan,
-        charges: 1000
+        charges: 1000,
+        min: "15 min",
     },
 
 ]

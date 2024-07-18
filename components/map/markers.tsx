@@ -14,13 +14,15 @@ const Markers = () => {
     return (
         <div>
             {/* User location */}
-            <Marker
-                longitude={userLocation?.lng}
-                latitude={userLocation?.lat}
-                anchor="bottom"
-            >
-                <img src={user?.imageUrl || "/next.svg"} className="w-6 h-6 rounded-full border-2 border-white ring-2 ring-black" />
-            </Marker>
+            {user &&
+                <Marker
+                    longitude={userLocation?.lng}
+                    latitude={userLocation?.lat}
+                    anchor="bottom"
+                >
+                    <img src={user?.imageUrl || "/next.svg"} className="w-6 h-6 rounded-full border-2 border-white ring-2 ring-black" />
+                </Marker>
+            }
 
             {/* Source location */}
             {sourceCordinates.length != 0 ? <Marker

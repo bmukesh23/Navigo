@@ -30,14 +30,19 @@ const Cars = () => {
                 alt={item.name}
                 className="w-12"
               />
-              <p className="text-xs mt-2 font-semibold">{item.name}</p>
+              {directionData.routes ?
+                <div>
+                  <p className="text-xs mt-2 font-semibold">{item.name}</p>
+                  <p className="text-[10px] text-blue-500">{item.min} min away</p>
+                </div> : null
+              }
             </div>
 
             <h2 className="text-xs text-gray-500 font-semibold">
               {directionData.routes ?
                 <span className="flex items-center justify-center">
                   {getCost(item.charges)}
-                  <Image src={ethLogo} alt="ETH" height={30} width={30}/>
+                  <Image src={ethLogo} alt="ETH" height={30} width={30} />
                 </span> : null
               }
             </h2>
