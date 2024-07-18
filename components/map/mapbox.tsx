@@ -62,8 +62,6 @@ const Mapbox = () => {
         );
 
         const result = await res.json();
-        console.log(result);
-        console.log(result.routes);
         setDirectionData(result);
     };
 
