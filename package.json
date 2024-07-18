@@ -10,7 +10,9 @@
   },
   "dependencies": {
     "@clerk/nextjs": "^5.2.3",
+    "@metamask/detect-provider": "^2.0.0",
     "@types/mapbox-gl": "^3.1.0",
+    "ethers": "^6.13.1",
     "mapbox-gl": "^3.5.1",
     "next": "14.2.5",
     "react": "^18",

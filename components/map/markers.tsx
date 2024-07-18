@@ -3,20 +3,23 @@ import { Marker } from "react-map-gl"
 import { UserLocationContext } from "@/context/userLocationContext"
 import { SourceCordiContext } from "@/context/sourceCordiContext";
 import { DestinationCordiContext } from "@/context/destinationCordiContext";
+import { useUser } from "@clerk/nextjs";
 
 const Markers = () => {
     const { userLocation, setUserLocation } = useContext(UserLocationContext);
     const { sourceCordinates, setSourceCordinates } = useContext(SourceCordiContext);
     const { destinationCordinates, setDestinationCordinates } = useContext(DestinationCordiContext);
-    
+    const { user } = useUser();
+
     return (
         <div>
+            {/* User location */}
             <Marker
                 longitude={userLocation?.lng}
                 latitude={userLocation?.lat}
                 anchor="bottom"
             >
-                <img src="/next.svg" className="w-10 h-10" />
+                <img src={user?.imageUrl || "/next.svg"} className="w-6 h-6 rounded-full border-2 border-white ring-2 ring-black" />
             </Marker>
 
             {/* Source location */}
@@ -25,7 +28,7 @@ const Markers = () => {
                 latitude={sourceCordinates?.lat}
                 anchor="bottom"
             >
-                <img src="/next.svg" className="w-10 h-10" />
+                <div className="bg-red-600 rounded-full w-2 h-2 p-2 border-2 border-white ring-2 ring-black" />
             </Marker> : null}
 
             {/* Destination location */}
@@ -34,7 +37,7 @@ const Markers = () => {
                 latitude={destinationCordinates?.lat}
                 anchor="bottom"
             >
-                <img src="/next.svg" className="w-10 h-10" />
+                <div className="bg-green-600 rounded-full w-2 h-2 p-2 border-2 border-white ring-2 ring-black" />
             </Marker> : null}
         </div>
     )

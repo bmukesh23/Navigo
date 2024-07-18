@@ -7,6 +7,7 @@ import { SourceCordiContext } from "@/context/sourceCordiContext";
 import { DestinationCordiContext } from "@/context/destinationCordiContext";
 import { DirectionDataContext } from "@/context/directionDataContext";
 import MapboxRoute from "./mapboxRoute";
+import DistanceTime from "./distanceTime";
 
 const session_token = '5ccce4a4-ab0a-4a7c-943d-580e55542363'
 const MAPBOX_DRIVING_ENDPOINT = "https://api.mapbox.com/directions/v5/mapbox/driving/";
@@ -16,7 +17,7 @@ const Mapbox = () => {
     const { userLocation, setUserLocation } = useContext(UserLocationContext);
     const { sourceCordinates, setSourceCordinates } = useContext(SourceCordiContext);
     const { destinationCordinates, setDestinationCordinates } = useContext(DestinationCordiContext);
-    const {directionData, setDirectionData} = useContext(DirectionDataContext);
+    const { directionData, setDirectionData } = useContext(DirectionDataContext);
 
     //use to fly to source marker
     useEffect(() => {
@@ -37,14 +38,14 @@ const Mapbox = () => {
             })
         }
 
-        if(sourceCordinates && destinationCordinates){
+        if (sourceCordinates && destinationCordinates) {
             getDirectionRoute();
         }
     }, [destinationCordinates])
 
     const getDirectionRoute = async () => {
         const res = await fetch(
-          MAPBOX_DRIVING_ENDPOINT +
+            MAPBOX_DRIVING_ENDPOINT +
             sourceCordinates.lng +
             "," +
             sourceCordinates.lat +
@@ -55,21 +56,21 @@ const Mapbox = () => {
             "?overview=full&geometries=geojson" +
             "&access_token=" +
             process.env.NEXT_PUBLIC_MAPBOX_ACCESS_TOKEN,
-          {
-            headers: {
-              "Content-Type": "application/json",
-            },
-          }
+            {
+                headers: {
+                    "Content-Type": "application/json",
+                },
+            }
         );
-    
+
         const result = await res.json();
         console.log(result);
         console.log(result.routes);
         setDirectionData(result);
-      };
+    };
 
     return (
-        <div className="p-5">
+        <section className="p-5">
             <div className="rounded-lg overflow-hidden">
                 {userLocation ?
                     <Map
@@ -81,20 +82,24 @@ const Mapbox = () => {
                             zoom: 14
                         }}
                         style={{ width: '100%', height: 590, borderRadius: 10 }}
-                        mapStyle="mapbox://styles/mapbox/streets-v9"   
+                        mapStyle="mapbox://styles/mapbox/streets-v9"
                     >
                         <Markers />
 
-                        {directionData?.routes ? (
-                            <MapboxRoute
-                                coordinates={directionData?.routes[0]?.geometry?.coordinates}
-                            />
-                        ): null}
-                    </Map>
-                    : null
+                        {
+                            directionData?.routes ? (
+                                <MapboxRoute
+                                    coordinates={directionData?.routes[0]?.geometry?.coordinates}
+                                />
+                            ) : null
+                        }
+                    </Map> : null
                 }
             </div>
-        </div>
+            <div className="absolute bottom-[73px] z-20 right-5 hidden md:block">
+                <DistanceTime />
+            </div>
+        </section>
     )
 }
 export default Mapbox
