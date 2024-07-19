@@ -4,17 +4,23 @@ import Image from "next/image";
 import { useContext, useState } from "react";
 import ethLogo from "@/public/eth-logo.png";
 
-const Cars = () => {
-  const [selectedCar, setSelectedCar] = useState<any>();
-  const { directionData, setDirectionData } = useContext(DirectionDataContext);
+interface CarsProps {
+  setSelectedCar: React.Dispatch<React.SetStateAction<any>>;
+}
 
+const Cars: React.FC<CarsProps> = ({ setSelectedCar }) => {
+  const [selectedCarIndex, setSelectedCarIndex] = useState<number | null>(null);
+  const { directionData } = useContext(DirectionDataContext);
 
   const getCost = (charges: any) => {
-    // Convert distance from meters to miles
     const distanceInMiles = directionData.routes[0].distance * 0.000621371192;
-    // Calculate the cost in ETH based on the distance in miles
-    const costInETH = charges * distanceInMiles / 294117.65;
+    const costInETH = charges * distanceInMiles / 1941178.65;
     return costInETH.toFixed(5);
+  }
+
+  const handleCarClick = (index: number, car: any) => {
+    setSelectedCarIndex(index);
+    setSelectedCar(car);
   }
 
   return (
@@ -22,8 +28,8 @@ const Cars = () => {
       <h2 className="font-semibold text-slate-500 text-xs flex items-center justify-center">Choose a ride, or swipe up for more</h2>
       <div className="grid grid-cols-1">
         {carlist.map((item, index) => (
-          <div key={index} className={`flex items-center justify-between m-2 p-2 border-[1px] rounded-md hover:border-blue-400 cursor-pointer ${index == selectedCar ? 'border-blue-400 border-2' : null}`}
-            onClick={() => setSelectedCar(index)}>
+          <div key={index} className={`flex items-center justify-between m-2 p-2 border-[1px] rounded-md hover:border-blue-400 cursor-pointer ${index == selectedCarIndex ? 'border-blue-400 border-2' : ''}`}
+            onClick={() => handleCarClick(index, item)}>
             <div className="flex items-center gap-2">
               <Image
                 src={item.image}
