@@ -3,6 +3,7 @@ import carlist from "@/data/carlist";
 import Image from "next/image";
 import { useContext, useState } from "react";
 import ethLogo from "@/public/eth-logo.png";
+import { Skeleton } from "../ui/skeleton";
 
 interface CarsProps {
   setSelectedCar: React.Dispatch<React.SetStateAction<any>>;
@@ -40,7 +41,11 @@ const Cars: React.FC<CarsProps> = ({ setSelectedCar }) => {
                 <div>
                   <p className="text-xs mt-2 font-semibold">{item.name}</p>
                   <p className="text-[10px] text-blue-500">{item.min} min away</p>
-                </div> : null
+                </div> : 
+                <div className="space-y-2">
+                  <Skeleton className="w-[100px] h-2 lg:w-[135px] md:h-3 rounded-sm bg-slate-400" />
+                  <Skeleton className="w-[150px] h-2 lg:w-[155px] md:h-3 rounded-sm bg-slate-400" />
+                </div>
               }
             </div>
 

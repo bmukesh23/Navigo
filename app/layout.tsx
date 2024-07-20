@@ -20,7 +20,6 @@ export default function RootLayout({
     <ClerkProvider>
       <html lang="en">
         <body className={inter.className}>
-          <div className="bg-blue-600 absolute top-[-6rem] -z-10 right-[11rem] h-[15.25rem] w-[31.25rem] rounded-full blur-[10rem] sm:w-[68.75rem]"></div>
           <Navbar />
           {children}
         </body>

@@ -129,7 +129,7 @@ const AutoCompleteAddress: React.FC<AutoCompleteAddressProps> = ({
           }}
         />
         {destinationAddressList.length > 0 && destinationChange &&
-          <div className='shadow-md p-1 rounded-md absolute w-full bg-white'>
+          <div className='shadow-md p-1 rounded-md absolute w-full bg-white z-20'>
             {destinationAddressList.map((item: any, index: number) => (
               <h2 key={index} className='p-3 hover:bg-gray-100 cursor-pointer' onClick={() => onDestinationAddressClick(item)}>
                 {item.place_formatted || item.full_address}

@@ -89,7 +89,7 @@ const Booking: React.FC = () => {
                   <Loader />
                 </div> :
                 <button
-                  className="bg-blue-700 p-2 mt-2 rounded-md text-white font-semibold hover:bg-blue-500 hover:cursor-pointer text-sm"
+                  className="bg-blue-700 p-2 mt-2 rounded-md text-white font-semibold hover:bg-blue-500 hover:cursor-pointer text-xs lg:text-sm"
                   onClick={handlePayment}
                 >
                   Pay with MetaMask

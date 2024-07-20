@@ -7,6 +7,8 @@ import { SourceCordiContext } from "@/context/sourceCordiContext";
 import { DestinationCordiContext } from "@/context/destinationCordiContext";
 import { DirectionDataContext } from "@/context/directionDataContext";
 import MapboxRoute from "./mapboxRoute";
+import { Skeleton } from "@/components/ui/skeleton"
+
 
 const MAPBOX_DRIVING_ENDPOINT = "https://api.mapbox.com/directions/v5/mapbox/driving/";
 
@@ -69,27 +71,31 @@ const Mapbox = () => {
         <section className="p-5">
             <div className="rounded-lg overflow-hidden">
                 {userLocation ?
-                    <Map
-                        ref={mapRef}
-                        mapboxAccessToken={process.env.NEXT_PUBLIC_MAPBOX_ACCESS_TOKEN}
-                        initialViewState={{
-                            longitude: userLocation?.lng,
-                            latitude: userLocation?.lat,
-                            zoom: 14
-                        }}
-                        style={{ width: '100%', height: 590, borderRadius: 10 }}
-                        mapStyle="mapbox://styles/mapbox/streets-v9"
-                    >
-                        <Markers />
-
-                        {
-                            directionData?.routes ? (
+                    <div className="h-[300px] sm:h-[400px] md:h-[500px] lg:h-[590px]">
+                        <Map
+                            ref={mapRef}
+                            mapboxAccessToken={process.env.NEXT_PUBLIC_MAPBOX_ACCESS_TOKEN}
+                            initialViewState={{
+                                longitude: userLocation.lng,
+                                latitude: userLocation.lat,
+                                zoom: 14,
+                            }}
+                            style={{
+                                width: '100%',
+                                height: '100%',
+                                borderRadius: '10px',
+                            }}
+                            mapStyle="mapbox://styles/mapbox/streets-v9"
+                        >
+                            <Markers />
+                            {directionData?.routes && (
                                 <MapboxRoute
-                                    coordinates={directionData?.routes[0]?.geometry?.coordinates}
+                                    coordinates={directionData.routes[0].geometry.coordinates}
                                 />
-                            ) : null
-                        }
-                    </Map> : null
+                            )}
+                        </Map>
+                    </div>
+                    : <Skeleton className="w-full h-[300px] sm:h-[400px] md:h-[500px] lg:h-[590px] rounded-sm bg-slate-500" />
                 }
             </div>
         </section>
