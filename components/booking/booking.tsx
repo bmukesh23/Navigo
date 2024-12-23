@@ -4,6 +4,8 @@ import Cars from "./cars";
 import AutoCompleteAddress from "./auto-complete-address";
 import { DirectionDataContext } from "@/context/directionDataContext";
 import Loader from "../loader";
+import { toast } from 'react-toastify';
+import router from "next/router";
 
 declare global {
   interface Window {
@@ -24,7 +26,7 @@ const Booking: React.FC = () => {
 
   const handlePayment = async () => {
     if (!selectedCar) {
-      alert('Please select a car first.');
+      toast.error('Please select a car first.');
       return;
     }
 
@@ -33,7 +35,7 @@ const Booking: React.FC = () => {
     const costInETH = (charges * distanceInMiles / 1941178.65).toFixed(5);
 
     if (!costInETH) {
-      alert('No charge available for the selected car.');
+      toast.error('No charge available for the selected car.');
       return;
     }
 
@@ -41,12 +43,20 @@ const Booking: React.FC = () => {
       // Mobile-specific payment flow
       try {
         const valueInHex = parseUnits(costInETH.toString(), 'ether');
-        const callbackUrl = encodeURIComponent(window.location.origin + '/payment-callback');
-        const deepLink = `https://metamask.app.link/send/${process.env.NEXT_PUBLIC_METAMASK_RECEIVER_ADDRESS}?value=${valueInHex}&chain=sepolia&callback=${callbackUrl}`;
+        const deepLink = `https://metamask.app.link/send/${process.env.NEXT_PUBLIC_METAMASK_RECEIVER_ADDRESS}?value=${valueInHex}&chain=sepolia`;
         window.location.href = deepLink;
+
+        const provider = new ethers.BrowserProvider(window.ethereum);
+        provider.once('block', async () => {
+          toast.success('Payment successful!');
+          setSource('');
+          setDestination('');
+          router.push('/');
+        });
+
       } catch (error) {
         console.error('Error making payment:', error);
-        alert('Payment failed. Please try again.');
+        toast.error('Payment failed. Please try again.');
         setLoading(false);
       }
     } else {
@@ -72,11 +82,13 @@ const Booking: React.FC = () => {
             // console.log('Transaction Response:', transactionResponse);
             await transactionResponse.wait();
             // console.log('Transaction confirmed');
-            alert('Payment successfull!');
+            toast.success('Payment successfull!');
+            setSource('');
+            setDestination('');
             setLoading(false);
           } catch (error) {
             // console.error('Error making payment:', error);
-            alert('Payment failed. Please try again.');
+            toast.error('Payment failed. Please try again.');
           } finally {
             setLoading(false);
           }
@@ -84,7 +96,7 @@ const Booking: React.FC = () => {
         await sendTransaction();
       } catch (error) {
         console.error('Error making payment:', error);
-        alert('Payment failed. Please try again.');
+        toast.error('Payment failed. Please try again.');
         setLoading(false);
       }
     }
