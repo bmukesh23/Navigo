@@ -1,5 +1,5 @@
 import { useContext, useState } from "react";
-import { ethers } from "ethers";
+import { ethers, parseUnits } from "ethers";
 import Cars from "./cars";
 import AutoCompleteAddress from "./auto-complete-address";
 import { DirectionDataContext } from "@/context/directionDataContext";
@@ -17,6 +17,10 @@ const Booking: React.FC = () => {
   const [selectedCar, setSelectedCar] = useState<any>(null);
   const [loading, setLoading] = useState<boolean>(false);
   const { directionData } = useContext(DirectionDataContext);
+
+  const isMobile = () => {
+    return /iPhone|iPad|iPod|Android/i.test(navigator.userAgent);
+  };
 
   const handlePayment = async () => {
     if (!selectedCar) {
@@ -63,7 +67,15 @@ const Booking: React.FC = () => {
           setLoading(false);
         }
       };
-      await sendTransaction();
+      // await sendTransaction();
+
+      if (isMobile()) {
+        const deepLink = `https://metamask.app.link/send/${process.env.NEXT_PUBLIC_METAMASK_RECEIVER_ADDRESS}?value=${parseUnits(costInETH.toString(), 'ether')}`;
+        window.location.href = deepLink;
+      } else {
+        await sendTransaction();
+      }
+
     } catch (error) {
       console.error('Error making payment:', error);
       alert('Payment failed. Please try again.');
