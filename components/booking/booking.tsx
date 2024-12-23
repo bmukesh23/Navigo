@@ -46,17 +46,15 @@ const Booking: React.FC = () => {
         const deepLink = `https://metamask.app.link/send/${process.env.NEXT_PUBLIC_METAMASK_RECEIVER_ADDRESS}?value=${valueInHex}&chain=sepolia`;
         window.location.href = deepLink;
 
-        const provider = new ethers.BrowserProvider(window.ethereum);
-        provider.once('block', async () => {
-          toast.success('Payment successful!');
-          setSource('');
-          setDestination('');
-          router.push('/');
-        });
+        // const provider = new ethers.BrowserProvider(window.ethereum);
+        // provider.once('block', async () => {
+        //   toast.success('Payment successful!');
+        //   setSource('');
+        //   setDestination('');
+        //   router.push('/');
+        // });
 
       } catch (error) {
-        console.error('Error making payment:', error);
-        toast.error('Payment failed. Please try again.');
         setLoading(false);
       }
     } else {
