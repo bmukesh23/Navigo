@@ -34,7 +34,8 @@ const Booking: React.FC = () => {
     }
 
     try {
-      const deepLink = `https://metamask.app.link/send/${process.env.NEXT_PUBLIC_METAMASK_RECEIVER_ADDRESS}?value=${parseUnits(costInETH.toString(), 'ether')}`;
+      const valueInHex = parseUnits(costInETH.toString(), 'ether');
+      const deepLink = `https://metamask.app.link/send/${process.env.NEXT_PUBLIC_METAMASK_RECEIVER_ADDRESS}?value=${valueInHex}&chain=sepolia`;
       console.log('Mobile deep link:', deepLink);
       window.location.href = deepLink;
     } catch (error) {
