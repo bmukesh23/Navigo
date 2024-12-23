@@ -18,6 +18,10 @@ const Booking: React.FC = () => {
   const [loading, setLoading] = useState<boolean>(false);
   const { directionData } = useContext(DirectionDataContext);
 
+  const isMobile = () => {
+    return /iPhone|iPad|iPod|Android/i.test(navigator.userAgent);
+  };
+
   const handlePayment = async () => {
     if (!selectedCar) {
       alert('Please select a car first.');
@@ -33,53 +37,57 @@ const Booking: React.FC = () => {
       return;
     }
 
-    try {
-      const valueInHex = parseUnits(costInETH.toString(), 'ether');
-      const deepLink = `https://metamask.app.link/send/${process.env.NEXT_PUBLIC_METAMASK_RECEIVER_ADDRESS}?value=${valueInHex}&chain=sepolia`;
-      console.log('Mobile deep link:', deepLink);
-      window.location.href = deepLink;
-    } catch (error) {
-      console.error('Error making payment:', error);
-      alert('Payment failed. Please try again.');
-      setLoading(false);
+    if (isMobile()) {
+      // Mobile-specific payment flow
+      try {
+        const valueInHex = parseUnits(costInETH.toString(), 'ether');
+        const callbackUrl = encodeURIComponent(window.location.origin + '/payment-callback');
+        const deepLink = `https://metamask.app.link/send/${process.env.NEXT_PUBLIC_METAMASK_RECEIVER_ADDRESS}?value=${valueInHex}&chain=sepolia&callback=${callbackUrl}`;
+        window.location.href = deepLink;
+      } catch (error) {
+        console.error('Error making payment:', error);
+        alert('Payment failed. Please try again.');
+        setLoading(false);
+      }
+    } else {
+      // Desktop-specific payment flow
+      try {
+        if (!window.ethereum) {
+          throw new Error("No wallet found.");
+        }
+
+        await window.ethereum.send("eth_requestAccounts");
+        const provider = new ethers.BrowserProvider(window.ethereum);
+        const signer = await provider.getSigner();
+
+        const tx = {
+          to: process.env.NEXT_PUBLIC_METAMASK_RECEIVER_ADDRESS, // Replace with the recipient wallet address
+          value: ethers.parseEther(costInETH.toString()),
+        };
+        setLoading(true);
+
+        const sendTransaction = async () => {
+          try {
+            const transactionResponse = await signer.sendTransaction(tx);
+            // console.log('Transaction Response:', transactionResponse);
+            await transactionResponse.wait();
+            // console.log('Transaction confirmed');
+            alert('Payment successfull!');
+            setLoading(false);
+          } catch (error) {
+            // console.error('Error making payment:', error);
+            alert('Payment failed. Please try again.');
+          } finally {
+            setLoading(false);
+          }
+        };
+        await sendTransaction();
+      } catch (error) {
+        console.error('Error making payment:', error);
+        alert('Payment failed. Please try again.');
+        setLoading(false);
+      }
     }
-
-    // try {
-    //   if (!window.ethereum) {
-    //     throw new Error("No wallet found.");
-    //   }
-
-    //   await window.ethereum.send("eth_requestAccounts");
-    //   const provider = new ethers.BrowserProvider(window.ethereum);
-    //   const signer = await provider.getSigner();
-
-    //   const tx = {
-    //     to: process.env.NEXT_PUBLIC_METAMASK_RECEIVER_ADDRESS, // Replace with the recipient wallet address
-    //     value: ethers.parseEther(costInETH.toString()),
-    //   };
-    //   setLoading(true);
-
-    //   const sendTransaction = async () => {
-    //     try {
-    //       const transactionResponse = await signer.sendTransaction(tx);
-    //       // console.log('Transaction Response:', transactionResponse);
-    //       await transactionResponse.wait();
-    //       // console.log('Transaction confirmed');
-    //       alert('Payment successfull!');
-    //       setLoading(false);
-    //     } catch (error) {
-    //       // console.error('Error making payment:', error);
-    //       alert('Payment failed. Please try again.');
-    //     } finally {
-    //       setLoading(false);
-    //     }
-    //   };
-    //   await sendTransaction();
-    // } catch (error) {
-    //   console.error('Error making payment:', error);
-    //   alert('Payment failed. Please try again.');
-    //   setLoading(false);
-    // }
   };
 
   return (
