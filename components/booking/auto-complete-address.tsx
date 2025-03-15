@@ -94,11 +94,11 @@ const AutoCompleteAddress: React.FC<AutoCompleteAddressProps> = ({
   return (
     <section>
       <div className='relative'>
-        <label className='text-gray-400 text-sm font-semibold'>Where From?</label>
+        <label className='text-white text-sm font-semibold'>Where From?</label>
         <input
           type="text"
           placeholder="Search for an address or landmark"
-          className='p-1 w-full rounded-md outline-none text-sm border'
+          className='p-1 w-full rounded-md outline-none text-sm bg-gray-800 border-none text-white'
           value={source}
           onChange={(e) => {
             setSource(e.target.value);
@@ -117,10 +117,10 @@ const AutoCompleteAddress: React.FC<AutoCompleteAddressProps> = ({
       </div>
 
       <div className='relative mt-4'>
-        <label className='text-gray-400 text-sm font-semibold'>Where To?</label>
+        <label className='text-white text-sm font-semibold'>Where To?</label>
         <input
           type="text"
-          className='p-1 w-full rounded-md outline-none text-sm border'
+          className='p-1 w-full rounded-md outline-none text-sm bg-gray-800 border-none text-white'
           value={destination}
           placeholder="Enter destination"
           onChange={(e) => {

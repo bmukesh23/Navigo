@@ -20,9 +20,11 @@ export default function RootLayout({
   return (
     <ClerkProvider>
       <html lang="en">
-        <body className={inter.className}>
+        <body className={`${inter.className} flex flex-col min-h-screen bg-gray-900`}>
           <Navbar />
-          {children}
+          <main className="flex-grow">
+            {children}
+          </main>
           <ToastContainer />
         </body>
       </html>

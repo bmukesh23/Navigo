@@ -26,10 +26,10 @@ const Cars: React.FC<CarsProps> = ({ setSelectedCar }) => {
 
   return (
     <div className="mt-3">
-      <h2 className="font-semibold text-slate-500 text-xs flex items-center justify-center">Choose a ride, or swipe up for more</h2>
+      <h2 className="font-semibold text-white text-xs flex items-center justify-center">Choose a ride, or swipe up for more</h2>
       <div className="grid grid-cols-1">
         {carlist.map((item, index) => (
-          <div key={index} className={`flex items-center justify-between m-2 p-2 border-[1px] rounded-md hover:border-blue-400 cursor-pointer ${index == selectedCarIndex ? 'border-blue-400 border-2' : ''}`}
+          <div key={index} className={`flex items-center justify-between m-2 p-2 border-[1px] bg-gray-800 rounded-md hover:border-blue-400 cursor-pointer ${index == selectedCarIndex ? 'border-blue-400 border-2' : ''}`}
             onClick={() => handleCarClick(index, item)}>
             <div className="flex items-center gap-2">
               <Image
@@ -39,7 +39,7 @@ const Cars: React.FC<CarsProps> = ({ setSelectedCar }) => {
               />
               {directionData.routes ?
                 <div>
-                  <p className="text-xs mt-2 font-semibold">{item.name}</p>
+                  <p className="text-xs mt-2 font-semibold text-white">{item.name}</p>
                   <p className="text-[10px] text-blue-500">{item.min} min away</p>
                 </div> : 
                 <div className="space-y-2">
@@ -49,11 +49,11 @@ const Cars: React.FC<CarsProps> = ({ setSelectedCar }) => {
               }
             </div>
 
-            <h2 className="text-xs text-gray-500 font-semibold">
+            <h2 className="text-xs text-white font-semibold">
               {directionData.routes ?
                 <span className="flex items-center justify-center">
                   {getCost(item.charges)}
-                  <Image src={ethLogo} alt="ETH" height={30} width={30} />
+                  <Image src={ethLogo} alt="ETH" height={40} width={40}/>
                 </span> : null
               }
             </h2>
